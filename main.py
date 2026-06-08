@@ -382,15 +382,15 @@ async def share_handler(update: Update, context: ContextTypes.DEFAULT_TYPE, serv
             res_obj = hc_res if service == "share" else res
             link = get_hubcloud_direct_link(res_obj)
             if link: parts.append(f"[HubCloud]({link})")
-            else: errors_to_send.append(f"❌ File: {name}\n↳ HubCloud Error: {get_api_error(res_obj, 'HubCloud')}")
+            else: errors_to_send.append(f"File: {name}\n↳ HubCloud Error: {get_api_error(res_obj, 'HubCloud')}")
 
         if service in ["share", "gdflix"]:
             res_obj = gf_res if service == "share" else res
             link = get_gdflix_direct_link(res_obj)
             if link: parts.append(f"[GDFlix]({link})")
-            else: errors_to_send.append(f"❌ File: {name}\n↳ GDFlix Error: {get_api_error(res_obj, 'GDFlix')}")
+            else: errors_to_send.append(f"File: {name}\n↳ GDFlix Error: {get_api_error(res_obj, 'GDFlix')}")
 
-        link_line = " \\| ".join(parts) if parts else escape_md_v2("❌ Link Generation Failed")
+        link_line = " \\| ".join(parts) if parts else escape_md_v2("Link Generation Failed")
         result_blocks.append(f"{title}\n▸ {link_line}")
 
     tg_line = escape_md_v2(f"\n\n✨ TG : {CHANNEL_TAG}")
@@ -401,7 +401,7 @@ async def share_handler(update: Update, context: ContextTypes.DEFAULT_TYPE, serv
     except Exception as e: await msg.edit_text(f"Error formatting: {e}")
 
     if errors_to_send:
-        await update.message.reply_text(f"⚠️ *Error Report:*\n\n" + "\n\n".join(errors_to_send), parse_mode="Markdown")
+        await update.message.reply_text(f"*Error Report:*\n\n" + "\n\n".join(errors_to_send), parse_mode="Markdown")
 
 async def hubc_cmd(update, context): await share_handler(update, context, "hubc")
 async def gdflix_cmd(update, context): await share_handler(update, context, "gdflix")
@@ -419,12 +419,12 @@ async def chngd_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if service in ["gdflix", "gf"]:
         CONFIG["GDFLIX_DOMAIN"] = new_domain
         save_config(CONFIG)
-        return await update.message.reply_text(f"✅ GDFlix domain updated to: {new_domain}")
+        return await update.message.reply_text(f"GDFlix domain updated to: {new_domain}")
     elif service in ["hubcloud", "hc"]:
         CONFIG["HUBCLOUD_DOMAIN"] = new_domain
         save_config(CONFIG)
-        return await update.message.reply_text(f"✅ HubCloud domain updated to: {new_domain}")
-    return await update.message.reply_text("❌ Unknown service. Use 'gdflix' or 'hubcloud'.")
+        return await update.message.reply_text(f"HubCloud domain updated to: {new_domain}")
+    return await update.message.reply_text("Unknown service. Use 'gdflix' or 'hubcloud'.")
 
 async def infod_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_authorized(update): return await update.message.reply_text("Not authorized.")
