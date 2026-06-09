@@ -180,7 +180,7 @@ async def share_to_hubcloud(file_id: str) -> dict:
         url = f"https://{domain}/drive/shareapi.php?key={key}&link_add={file_id}"
         headers = {**BROWSER_HEADERS, "Referer": f"https://{domain}/"}
 
-        async with AsyncSession(impersonate="chrome120") as session:
+        async with AsyncSession(impersonate="safari15_5") as session:
             resp = await session.get(url, headers=headers, timeout=30)
             text = resp.text
             if is_cloudflare_block(text):
@@ -206,7 +206,7 @@ async def share_to_gdflix(file_id: str) -> dict:
             "Origin": f"https://{domain}",
         }
 
-        async with AsyncSession(impersonate="chrome120") as session:
+        async with AsyncSession(impersonate="safari15_5") as session:
             resp = await session.get(url, headers=headers, allow_redirects=True, timeout=30)
             if is_cloudflare_block(resp.text):
                 return {"error": f"Cloudflare blocked (HTTP {resp.status_code})."}
